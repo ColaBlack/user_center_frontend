@@ -84,7 +84,7 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
     return false;
   }
 };
-const TableList: React.FC = () => {
+const UserList: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -294,4 +294,4 @@ const TableList: React.FC = () => {
     </PageContainer>
   );
 };
-export default TableList;
+export default UserList;
