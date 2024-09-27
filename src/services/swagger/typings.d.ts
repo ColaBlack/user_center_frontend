@@ -1,112 +1,153 @@
 declare namespace API {
-  type ApiResponse = {
+  type BaseResponseBoolean = {
     code?: number;
-    type?: string;
+    data?: boolean;
     message?: string;
   };
 
-  type Category = {
+  type BaseResponseLong = {
+    code?: number;
+    data?: number;
+    message?: string;
+  };
+
+  type BaseResponsePageUser = {
+    code?: number;
+    data?: PageUser;
+    message?: string;
+  };
+
+  type BaseResponsePageUserVO = {
+    code?: number;
+    data?: PageUserVO;
+    message?: string;
+  };
+
+  type BaseResponseUser = {
+    code?: number;
+    data?: User;
+    message?: string;
+  };
+
+  type BaseResponseUserVO = {
+    code?: number;
+    data?: UserVO;
+    message?: string;
+  };
+
+  type DeleteRequest = {
     id?: number;
-    name?: string;
   };
 
-  type deleteOrderParams = {
-    /** ID of the order that needs to be deleted */
-    orderId: number;
+  type getUserByIdParams = {
+    id: number;
   };
 
-  type deletePetParams = {
-    api_key?: string;
-    /** Pet id to delete */
-    petId: number;
+  type getUserVOByIdParams = {
+    id: number;
   };
 
-  type deleteUserParams = {
-    /** The name that needs to be deleted */
-    username: string;
+  type OrderItem = {
+    column?: string;
+    asc?: boolean;
   };
 
-  type findPetsByStatusParams = {
-    /** Status values that need to be considered for filter */
-    status: ('available' | 'pending' | 'sold')[];
+  type PageUser = {
+    records?: User[];
+    total?: number;
+    size?: number;
+    current?: number;
+    orders?: OrderItem[];
+    optimizeCountSql?: PageUser;
+    searchCount?: PageUser;
+    optimizeJoinOfCountSql?: boolean;
+    maxLimit?: number;
+    countId?: string;
+    pages?: number;
   };
 
-  type findPetsByTagsParams = {
-    /** Tags to filter by */
-    tags: string[];
-  };
-
-  type getOrderByIdParams = {
-    /** ID of pet that needs to be fetched */
-    orderId: number;
-  };
-
-  type getPetByIdParams = {
-    /** ID of pet to return */
-    petId: number;
-  };
-
-  type getUserByNameParams = {
-    /** The name that needs to be fetched. Use user1 for testing.  */
-    username: string;
-  };
-
-  type loginUserParams = {
-    /** The user name for login */
-    username: string;
-    /** The password for login in clear text */
-    password: string;
-  };
-
-  type Order = {
-    id?: number;
-    petId?: number;
-    quantity?: number;
-    shipDate?: string;
-    /** Order Status */
-    status?: 'placed' | 'approved' | 'delivered';
-    complete?: boolean;
-  };
-
-  type Pet = {
-    id?: number;
-    category?: Category;
-    name: string;
-    photoUrls: string[];
-    tags?: Tag[];
-    /** pet status in the store */
-    status?: 'available' | 'pending' | 'sold';
-  };
-
-  type Tag = {
-    id?: number;
-    name?: string;
-  };
-
-  type updatePetWithFormParams = {
-    /** ID of pet that needs to be updated */
-    petId: number;
-  };
-
-  type updateUserParams = {
-    /** name that need to be updated */
-    username: string;
-  };
-
-  type uploadFileParams = {
-    /** ID of pet to update */
-    petId: number;
+  type PageUserVO = {
+    records?: UserVO[];
+    total?: number;
+    size?: number;
+    current?: number;
+    orders?: OrderItem[];
+    optimizeCountSql?: PageUserVO;
+    searchCount?: PageUserVO;
+    optimizeJoinOfCountSql?: boolean;
+    maxLimit?: number;
+    countId?: string;
+    pages?: number;
   };
 
   type User = {
-    id?: number;
-    username?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    password?: string;
-    phone?: string;
-    /** User Status */
-    userStatus?: number;
+    userId?: number;
+    userNickname?: string;
+    userAccount?: string;
+    userAvatar?: string;
+    userPassword?: string;
+    userRole?: number;
+    createTime?: string;
+    updateTime?: string;
+    isDelete?: number;
+    userProfile?: string;
+  };
+
+  type UserAddRequest = {
+    userId?: number;
+    userNickname?: string;
+    userAccount?: string;
+    userAvatar?: string;
+    userPassword?: string;
+    userRole?: number;
+    userprofile?: string;
+  };
+
+  type UserLoginRequest = {
+    userAccount?: string;
+    userPassword?: string;
+  };
+
+  type UserQueryRequest = {
+    current?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    userId?: number;
+    userNickname?: string;
+    userAccount?: string;
+    userRole?: number;
+    userProfile?: string;
+  };
+
+  type UserRegisterRequest = {
+    userAccount?: string;
+    userPassword?: string;
+    checkPassword?: string;
+  };
+
+  type UserUpdateMyRequest = {
+    userNickname?: string;
+    userAvatar?: string;
+    userPassword?: string;
+    userProfile?: string;
+  };
+
+  type UserUpdateRequest = {
+    userId?: number;
+    userName?: string;
+    userAccount?: string;
+    userAvatar?: string;
+    userRole?: number;
+    userProfile?: string;
+  };
+
+  type UserVO = {
+    userId?: number;
+    userName?: string;
+    userAccount?: string;
+    userAvatar?: string;
+    userRole?: number;
+    userProfile?: string;
   };
 }
