@@ -82,7 +82,7 @@ declare namespace API {
 
   type User = {
     userId?: number;
-    userNickname?: string;
+    userName?: string;
     userAccount?: string;
     userAvatar?: string;
     userPassword?: string;
@@ -95,7 +95,7 @@ declare namespace API {
 
   type UserAddRequest = {
     userId?: number;
-    userNickname?: string;
+    userName?: string;
     userAccount?: string;
     userAvatar?: string;
     userPassword?: string;
@@ -114,7 +114,7 @@ declare namespace API {
     sortField?: string;
     sortOrder?: string;
     userId?: number;
-    userNickname?: string;
+    userName?: string;
     userAccount?: string;
     userRole?: number;
     userProfile?: string;
@@ -127,7 +127,7 @@ declare namespace API {
   };
 
   type UserUpdateMyRequest = {
-    userNickname?: string;
+    userName?: string;
     userAvatar?: string;
     userPassword?: string;
     userProfile?: string;

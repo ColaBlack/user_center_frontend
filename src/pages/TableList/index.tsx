@@ -1,4 +1,4 @@
-import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
+import { addRule, removeRule, updateRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -11,10 +11,11 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
+import { listAllUserByPage, listUserByPage } from '@/services/swagger/userController';
 
 /**
  * @en-US Add node
@@ -106,93 +107,53 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: '规则名称',
-      dataIndex: 'name',
-      tip: 'The rule name is the unique key',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
+      title: '用户ID',
+      dataIndex: 'userId',
+      valueType: 'text',
     },
     {
-      title: '描述',
-      dataIndex: 'desc',
+      title: '用户名',
+      dataIndex: 'userName',
+      valueType: 'text',
+    },
+    {
+      title: '用户账号',
+      dataIndex: 'userAccount',
+      valueType: 'text',
+    },
+    {
+      title: '用户头像',
+      dataIndex: 'userAvatar',
+      valueType: 'image',
+    },
+    {
+      title: '用户密码',
+      dataIndex: 'userPassword',
+      valueType: 'text',
+    },
+    {
+      title: '用户角色',
+      dataIndex: 'userRole',
+      valueType: 'text',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+      valueType: 'dateTime',
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      valueType: 'dateTime',
+    },
+    {
+      title: '用户简介',
+      dataIndex: 'userProfile',
       valueType: 'textarea',
     },
-    {
-      title: '服务调用次数',
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) => `${val}${'万'}`,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '关闭',
-          status: 'Default',
-        },
-        1: {
-          text: '运行中',
-          status: 'Processing',
-        },
-        2: {
-          text: '已上线',
-          status: 'Success',
-        },
-        3: {
-          text: '异常',
-          status: 'Error',
-        },
-      },
-    },
-    {
-      title: '上次调度时间',
-      sorter: true,
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return <Input {...rest} placeholder={'请输入异常原因！'} />;
-        }
-        return defaultRender(item);
-      },
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          配置
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          订阅警报
-        </a>,
-      ],
-    },
   ];
+  // @ts-ignore
+  // @ts-ignore
   return (
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
@@ -213,13 +174,20 @@ const TableList: React.FC = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={rule}
-        columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
+        request={async (params) => {
+          const res = await listUserByPage({
+            ...params,
+          });
+          if (res?.data) {
+            return {
+              data: res?.data.records || [],
+              success: true,
+              total: res.data.total || 0,
+            };
+          }
         }}
+        columns={columns}
+        rowSelection={{}}
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
@@ -262,7 +230,7 @@ const TableList: React.FC = () => {
           if (success) {
             handleModalOpen(false);
             if (actionRef.current) {
-              actionRef.current.reload();
+              await actionRef.current.reload();
             }
           }
         }}
@@ -286,7 +254,7 @@ const TableList: React.FC = () => {
             handleUpdateModalOpen(false);
             setCurrentRow(undefined);
             if (actionRef.current) {
-              actionRef.current.reload();
+              await actionRef.current.reload();
             }
           }
         }}
